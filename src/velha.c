@@ -24,11 +24,9 @@ void pvcpu();
 
 
 /*Using main() for testing purposes*/
-int main(){ 
+int main(){
 	int menuOption = 1;
 
-	
-	/*
 	while(menuOption){
 		showMenu();
 		scanf("%d", &menuOption);
@@ -48,7 +46,7 @@ int main(){
 			break;
 		}
 	}
-	*/
+
 	pvp();
 
 	return 0;
@@ -105,37 +103,15 @@ int validateCoord(int x, int y,int **board){
 int getWinner(int **board){
 	int winner = 0;
 
-	if((board[0][0] == board[1][1] && board[1][1] == board[2][2]) && board[0][0] > 0){  //cross 1
-		if(board[0][0] == 1) winner = 1;
-		else winner = 2;
-	}
-	else if(board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[0][2] > 0){//cross 2
-		if(board [0][2] == 1) winner = 1;
-		else winner = 2;
-	}
-	else if(board[0][0] == board[0][1] && board[0][1] == board[0][2] && board[0][0] > 0){ //line 1
-		if(board[0][0] == 1) winner = 1;
-		else winner = 2;
-	}
-	else if(board[1][0] == board[1][1] && board[1][1] == board[1][2] && board[1][0] > 0){ //line 2
-		if(board [1][0] == 1) winner = 1;
-		else winner = 2;
-	}
-	else if(board[2][0] == board[2][1] && board[2][1] == board[2][2] && board[2][0] > 0){ //line 3
-		if(board [2][0] == 1) winner = 1;
-		else winner = 2;
-	}
-	else if(board[0][0] == board[1][0] && board[1][0] == board[2][0] && board[0][0] > 0){ //pillar 1
-		if(board[0][0] == 1) winner = 1;
-		else winner = 2;
-	}
-	else if(board[0][1] == board[1][1] && board[1][1] == board[2][1] && board[0][1] > 0){ //pillar 2
-		if(board [0][1] == 1) winner = 1;
-		else winner = 2;
-	}
-	else if(board[0][2] == board[1][2] && board[1][2] == board[2][2] && board[0][2] > 0){ //pillar 3
-		if(board [0][2] == 1) winner = 1;
-		else winner = 2;
+	if((board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] > 0) || //cross 1
+		(board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[0][2] > 0) || //cross 2
+		(board[0][0] == board[0][1] && board[0][1] == board[0][2] && board[0][0] > 0) || //line 1
+		(board[1][0] == board[1][1] && board[1][1] == board[1][2] && board[1][0] > 0) || //line 2
+		(board[2][0] == board[2][1] && board[2][1] == board[2][2] && board[2][0] > 0) || //line 3
+		(board[0][0] == board[1][0] && board[1][0] == board[2][0] && board[0][0] > 0) || //pillar 1
+		(board[0][1] == board[1][1] && board[1][1] == board[2][1] && board[0][1] > 0) || //pillar 2
+		(board[0][2] == board[1][2] && board[1][2] == board[2][2] && board[0][2] > 0)){ //pillar 3
+			winner = 1;
 	}
 
 	return winner;
@@ -151,7 +127,7 @@ int **createBoard(){
 	for(i = 0; i < L; ++i){
 		for(j = 0; j < C; ++j) board[i][j] = 0;
 	}
-	
+
 	//Returns the address of the board in the heap
 	return board;
 }
@@ -171,15 +147,16 @@ void pvp(){
 			showBoard(board);
 			invalid = getCoord(&x, &y, board);
 		}
-	
+
 		//Turn switch
 		if(!(turn % 2)){
 			board[x][y] = 1;
+			if(getWinner(board)) winner = 1;
 		}else{
-			board[x][y] = 2;	
-		} 
+			board[x][y] = 2;
+			if(getWinner(board)) winner = 2;
+		}
 
-		winner = getWinner(board);
 		turn++;
 		turns++;
 		if(turns == 9){
@@ -206,4 +183,3 @@ void pvcpu(){
 void showCredits(){
 	;
 }
-
